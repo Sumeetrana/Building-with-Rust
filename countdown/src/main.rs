@@ -3,12 +3,23 @@ use std::thread::sleep;
 use std::time::Duration;
 
 fn main() {
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).expect("Invalid input");
+    loop {
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Invalid input");
 
-    let timer: u16 = input.trim().parse().expect("Invalid number");
+        // let timer: u16 = input.trim().parse().expect("Invalid number");
 
-    start_timer(timer);
+        let timer: u16 = match input.trim().parse() {
+            Ok(timer) => timer,
+            Err(_) => {
+                println!("Invalid number");
+                continue;
+            }
+        };
+
+        start_timer(timer);
+        break;
+    }
 }
 
 fn start_timer(timer: u16) {

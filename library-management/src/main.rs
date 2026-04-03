@@ -1,15 +1,18 @@
+#[derive(Debug)]
 struct Book {
     title: String,
     author: String,
     is_available: bool,
 }
 
+#[derive(Debug)]
 struct Library {
     name: String,
     address: String,
     book: Option<Book>, // Library may or may not have a book
 }
 
+#[derive(Debug)]
 enum LibraryError {
     BookNotAvailable,
     BookNotFound,
@@ -50,9 +53,18 @@ fn main() {
         is_available: true,
     };
 
-    let library = Library {
+    let mut library = Library {
         name: String::from("City library"),
         address: String::from("123 Library Lane"),
         book: Some(book), // assuming that there is only one book
     };
+
+    match library.borrow_book() {
+        Ok(result) => {
+            println!("Borrowed book: {:#?}", result);
+        }
+        Err(err) => {
+            println!("Error: {:#?}", err);
+        }
+    }
 }

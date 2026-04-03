@@ -17,6 +17,7 @@ enum LibraryError {
     BookNotAvailable,
     BookNotFound,
     AlreadyBorrowed,
+    BookAlreadyExists,
 }
 
 impl Book {
@@ -32,15 +33,12 @@ impl Book {
 }
 
 impl Library {
-    fn add_book(&mut self, book: Book) {
-        if let Some(existing_book) = &self.book {
-            if existing_book.title == book.title {
-                println!("Book already added");
-            } else {
-                self.book = Some(book);
-            }
-        } else {
+    fn add_book(&mut self, book: Book) -> Result<(), LibraryError> {
+        if self.book.is_none() {
             self.book = Some(book);
+            Ok(())
+        } else {
+            Err(LibraryError::BookAlreadyExists)
         }
     }
 
@@ -70,7 +68,10 @@ fn main() {
         book: None, // assuming that there is only one book
     };
 
-    library.add_book(book);
+    match library.add_book(book) {
+        Ok(_) => println!("Book added"),
+        Err(err) => println!("{:#?}", err),
+    }
 
     match library.borrow_book() {
         Ok(result) => {

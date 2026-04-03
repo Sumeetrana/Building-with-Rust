@@ -29,7 +29,10 @@ impl Book {
             Err(LibraryError::AlreadyBorrowed)
         }
     }
-    fn return_book() {}
+
+    fn return_book(&mut self) {
+        self.is_available = true;
+    }
 }
 
 impl Library {
@@ -52,7 +55,15 @@ impl Library {
             Err(LibraryError::BookNotFound)
         }
     }
-    fn return_book() {}
+
+    fn return_book(&mut self) -> Result<(), LibraryError> {
+        if let Some(book) = self.book.as_mut() {
+            book.return_book();
+            Ok(())
+        } else {
+            Err(LibraryError::BookNotAvailable)
+        }
+    }
 }
 
 fn main() {
@@ -80,5 +91,10 @@ fn main() {
         Err(err) => {
             println!("Error: {:#?}", err);
         }
+    }
+
+    match library.return_book() {
+        Ok(_) => println!("Book returned"),
+        Err(err) => println!("{:#?}", err),
     }
 }

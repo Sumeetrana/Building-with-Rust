@@ -32,7 +32,18 @@ impl Book {
 }
 
 impl Library {
-    fn add_book() {}
+    fn add_book(&mut self, book: Book) {
+        if let Some(existing_book) = &self.book {
+            if existing_book.title == book.title {
+                println!("Book already added");
+            } else {
+                self.book = Some(book);
+            }
+        } else {
+            self.book = Some(book);
+        }
+    }
+
     fn borrow_book(&mut self) -> Result<&mut Book, LibraryError> {
         if let Some(book) = self.book.as_mut() {
             match book.borrow() {
@@ -56,8 +67,10 @@ fn main() {
     let mut library = Library {
         name: String::from("City library"),
         address: String::from("123 Library Lane"),
-        book: Some(book), // assuming that there is only one book
+        book: None, // assuming that there is only one book
     };
+
+    library.add_book(book);
 
     match library.borrow_book() {
         Ok(result) => {

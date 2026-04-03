@@ -30,7 +30,16 @@ impl Book {
 
 impl Library {
     fn add_book() {}
-    fn borrow_book(&mut self) {}
+    fn borrow_book(&mut self) -> Result<&mut Book, LibraryError> {
+        if let Some(book) = self.book.as_mut() {
+            match book.borrow() {
+                Ok(borrowed_book) => Ok(borrowed_book),
+                Err(err) => Err(err),
+            }
+        } else {
+            Err(LibraryError::BookNotFound)
+        }
+    }
     fn return_book() {}
 }
 

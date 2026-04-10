@@ -37,5 +37,22 @@ fn add_task(task_list: &mut Vec<String>) {
 
     task_list.push(decription);
 }
-fn remove_task(task_list: &mut Vec<String>) {}
+
+fn remove_task(task_list: &mut Vec<String>) {
+    if task_list.is_empty() {
+        println!("NO tasks are found");
+        return;
+    }
+
+    println!("Please enter the task no. which you want to remove");
+    view_tasks(task_list);
+
+    let mut choice = String::new();
+    io::stdin().read_line(&mut choice).expect("Invalid choice");
+
+    let task_number: usize = choice.trim().parse().expect("Invalid choice");
+    task_list.remove(task_number - 1);
+    println!("Task is removed");
+}
+
 fn view_tasks(task_list: &Vec<String>) {}

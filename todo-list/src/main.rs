@@ -55,4 +55,11 @@ fn remove_task(task_list: &mut Vec<String>) {
     println!("Task is removed");
 }
 
-fn view_tasks(task_list: &Vec<String>) {}
+fn view_tasks(task_list: &Vec<String>) {
+    if task_list.is_empty() {
+        println!("No tasks are found");
+        return;
+    }
+
+    println!("Task list: {:?}", task_list);
+}
